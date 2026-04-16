@@ -1,3 +1,4 @@
+import time
 import os
 import subprocess
 import requests
@@ -28,9 +29,11 @@ def git_commit_and_push():
     )
     subprocess.run(["git", "push"])
 
-def send_to_slack():
-    webhook_url = os.environ["SLACK_WEBHOOK_URL"]
 
+def send_to_slack():
+    time.sleep(10)  # ✅ GitHub Raw CDN 전파 대기
+
+    webhook_url = os.environ["SLACK_WEBHOOK_URL"]
     payload = {
         "text": "🍱 오늘의 식단",
         "blocks": [
@@ -50,6 +53,7 @@ def send_to_slack():
     }
 
     response = requests.post(webhook_url, json=payload)
+    print("Slack response:", response.status_code, response.text)
     response.raise_for_status()
 
 if __name__ == "__main__":

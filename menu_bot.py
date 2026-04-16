@@ -1,22 +1,18 @@
 import os
+from datetime import datetime
 from playwright.sync_api import sync_playwright
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
-from datetime import datetime
 
 MENU_URL = "https://apps.cloud-cast.com/menuboard/frt/vertical_ourhome?menuboardId=3678"
 IMAGE_PATH = "menu.png"
 
 CHANNEL_IDS = [
-    #"C09PX2A4V39", #DB팀
-    #"C09QCGKR0P4", #솔루션팀
-    "C09LFFQDNP7", #lam_db_alarm_test
-    "C0ATH87EYBC" #db_alarm_test
+    "C09LFFQDNP7",  # lam_db_alarm_test
+    "C0ATH87EYBC",  # db_alarm_test
 ]
 
-
 def today_message():
-    # 한국어 요일 매핑
     weekday_map = {
         0: "월요일",
         1: "화요일",
@@ -31,6 +27,7 @@ def today_message():
     date_str = now.strftime("%Y-%m-%d")
     weekday_str = weekday_map[now.weekday()]
 
+    return f":bento: 오늘의 메뉴 업로드 ({date_str} {weekday_str})"
 
 def capture_menu():
     with sync_playwright() as p:
@@ -44,32 +41,33 @@ def send_to_slack():
     token = os.environ["SLACK_BOT_TOKEN"]
     client = WebClient(token=token)
 
-    # 1️⃣ 첫 번째 채널에 파일 업로드
-    result = client.files_upload_v2(
-        channel=CHANNEL_IDS[0],
-        file=IMAGE_PATH,
-        title="🍱 오늘의 식단",
-        initial_comment="🍱 오늘의 메뉴 ({date_str} {weekday_str})"
-    )
+    message = today_message()
 
-    file_id = result["file"]["id"]
-    print("Uploaded file_id:", file_id)
-
-    # 2️⃣ 나머지 채널에 파일 공유
-    for channel in CHANNEL_IDS[1:]:
-        client.files_sharedPublicURL(file=file_id)  # (일부 워크스페이스에서 필요)
-        client.chat_postMessage(
-            channel=channel,
-            text="🍱 오늘의 메뉴 ({date_str} {weekday_str})",
-            attachments=[],
-        )
-        client.files_share(
-            file=file_id,
-            channels=channel
+    try:
+        # 1️⃣ 첫 채널에 파일 업로드
+        result = client.files_upload_v2(
+            channel=CHANNEL_IDS[0],
+            file=IMAGE_PATH,
+            title="오늘의 메뉴",
+            initial_comment=message,
         )
 
-    print("Slack multi‑channel send success")
-    
+        file_id = result["file"]["id"]
+        print("Uploaded file_id:", file_id)
+
+        # 2️⃣ 나머지 채널에 같은 파일 공유
+        for channel in CHANNEL_IDS[1:]:
+            client.files_share(
+                file=file_id,
+                channels=channel,
+            )
+            client.chat_postMessage(
+                channel=channel,
+                text=message,
+            )
+
+        print("Slack multi-channel send success")
+
     except SlackApiError as e:
         print("Slack upload failed:", e.response["error"])
         raise

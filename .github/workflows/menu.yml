@@ -6,7 +6,7 @@ permissions:
 on:
   workflow_dispatch:   # ✅ 버튼 눌러 수동 실행
   schedule:
-    - cron: '* * * * *'   # ✅ 월~금 11:45 (KST)
+    - cron: '45 2 * * 1-5'   # ✅ 월~금 11:45 (KST)
 
 
 jobs:

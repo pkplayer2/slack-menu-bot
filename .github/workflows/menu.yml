@@ -1,13 +1,12 @@
-name: Slack Menu Bot (Webhook)
+name: Slack Menu Bot (File Upload)
 
 permissions:
-  contents: write
+  contents: read
 
 on:
-  workflow_dispatch:   # ✅ 버튼 눌러 수동 실행
+  workflow_dispatch:
   schedule:
     - cron: '45 2 * * 1-5'   # ✅ 월~금 11:45 (KST)
-
 
 jobs:
   send-menu:
@@ -16,8 +15,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,6 +28,7 @@ jobs:
 
       - name: Run menu bot
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
         run: |
           python menu_bot.py

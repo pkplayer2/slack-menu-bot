@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from playwright.sync_api import sync_playwright
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
@@ -23,7 +24,7 @@ def today_message():
         6: "일요일",
     }
 
-    now = datetime.now()
+    now = datetime.now(ZoneInfo("Asia/Seoul"))
     date_str = now.strftime("%Y-%m-%d")
     weekday_str = weekday_map[now.weekday()]
 

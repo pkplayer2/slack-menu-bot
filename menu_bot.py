@@ -9,8 +9,10 @@ MENU_URL = "https://apps.cloud-cast.com/menuboard/frt/vertical_ourhome?menuboard
 IMAGE_PATH = "menu.png"
 
 CHANNEL_IDS = [
-    "C09LFFQDNP7",  # lam_db_alarm_test
-    "C0ATH87EYBC",  # db_alarm_test
+    "C09PX2A4V39", #DB팀
+    "C09QCGKR0P4", #솔루션팀
+    #"C09LFFQDNP7",  # lam_db_alarm_test
+    #"C0ATH87EYBC",  # db_alarm_test
 ]
 
 def today_message():

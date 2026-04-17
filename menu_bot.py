@@ -45,9 +45,8 @@ def send_to_slack():
     message = today_message()
 
     try:
-        # 1️⃣ 첫 채널에 파일 업로드
         result = client.files_upload_v2(
-            channel=CHANNEL_IDS[0],
+            channels=",".join(CHANNEL_IDS),  # ✅ 핵심
             file=IMAGE_PATH,
             title="오늘의 메뉴",
             initial_comment=message,
@@ -55,18 +54,6 @@ def send_to_slack():
 
         file_id = result["file"]["id"]
         print("Uploaded file_id:", file_id)
-
-        # 2️⃣ 나머지 채널에 같은 파일 공유
-        for channel in CHANNEL_IDS[1:]:
-            client.files_share(
-                file=file_id,
-                channels=channel,
-            )
-            client.chat_postMessage(
-                channel=channel,
-                text=message,
-            )
-
         print("Slack multi-channel send success")
 
     except SlackApiError as e:

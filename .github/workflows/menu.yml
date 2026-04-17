@@ -5,8 +5,8 @@ permissions:
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '45 2 * * 1-5'   # ✅ 월~금 11:45 (KST)
+#  schedule:
+#    - cron: '45 2 * * 1-5'   # ✅ 월~금 11:45 (KST)
 
 jobs:
   send-menu:

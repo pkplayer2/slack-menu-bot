@@ -11,6 +11,7 @@ IMAGE_PATH = "menu.png"
 CHANNEL_IDS = [
     "C09PX2A4V39", #DB팀
     "C09QCGKR0P4", #솔루션팀
+    "C09FYR39J15", #웹개발
     #"C09LFFQDNP7",  # lam_db_alarm_test
     #"C0ATH87EYBC",  # db_alarm_test
 ]

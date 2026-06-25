@@ -39,8 +39,20 @@ def capture_menu():
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1080, "height": 1920})
-        page.goto(MENU_URL, wait_until="networkidle", timeout=60000)
-        page.screenshot(path=IMAGE_PATH, full_page=True)
+
+        page.goto(MENU_URL, wait_until="domcontentloaded", timeout=60000)
+
+        # ✅ 렌더링 완료 대기
+        page.wait_for_timeout(5000)
+
+        # ✅ 요소 등장 대기 (안 되면 무시)
+        try:
+            page.wait_for_selector("canvas, img", timeout=10000)
+        except:
+            pass
+
+        page.screenshot(path=IMAGE_PATH, full_page=False)
+
         browser.close()
 
 def send_to_slack():

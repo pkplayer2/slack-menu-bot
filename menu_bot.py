@@ -5,7 +5,9 @@ from playwright.sync_api import sync_playwright
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
-MENU_URL = "https://apps.cloud-cast.com/menuboard/frt/vertical_ourhome?menuboardId=3678"
+#MENU_URL = "https://apps.cloud-cast.com/menuboard/frt/vertical_ourhome?menuboardId=3678"
+MENU_URL = "https://www.miricanvas.com/v2/ko/design2/v/b4b22680-9140-45b2-9295-0df80864be7a"
+
 IMAGE_PATH = "menu.png"
 
 CHANNEL_IDS = [

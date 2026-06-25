@@ -11,7 +11,7 @@ MENU_URL = "https://www.miricanvas.com/v2/ko/design2/v/b4b22680-9140-45b2-9295-0
 IMAGE_PATH = "menu.png"
 
 CHANNEL_IDS = [
-    #"C09PX2A4V39", #DB팀
+    "C09PX2A4V39", #DB팀
     #"C09QCGKR0P4", #솔루션팀
     #"C09FYR39J15", #웹개발
     #"C09LFFQDNP7",  # lam_db_alarm_test
